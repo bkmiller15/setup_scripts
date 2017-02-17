@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# Removes all spaces and insert _ for files in current directory.
+#
+
+rename "s/ /_/g" ./*

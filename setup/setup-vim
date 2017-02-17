@@ -1,0 +1,54 @@
+#!/bin/bash
+
+source $(dirname "$0")/../helper.sh
+
+set -x
+
+exit
+
+UPDATE=0
+REPO="https://github.com/thekeymaker/my_vimrc_files.git"
+VIMDIR=".vim"
+
+
+
+while getopts ":u" opt; do
+  case $opt in
+    u)
+	UPDATE=1
+      ;;
+    \?)
+      	echo "Invalid option: -$OPTARG" >&2
+	exit 1
+      ;;
+  esac
+done
+
+
+# Install ctags
+helper_install_app ctags
+
+
+
+if [ "$UPDATE" -eq "1" ]; then
+	cd 
+	cd $VIMDIR
+	git pull origin master
+else
+        echo "Installing vim"
+	sudo apt install vim 
+
+	cd 
+	
+	git clone $REPO $VIMDIR
+
+	cd $VIMDIR
+
+	git submodule init
+	git submodule update
+
+	ln -s ~/${VIMDIR}/vimrc ~/.vimrc
+fi
+
+
+

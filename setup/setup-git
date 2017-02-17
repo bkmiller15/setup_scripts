@@ -1,0 +1,119 @@
+#!/bin/bash
+# 
+# Script used for setting up git preferences
+#
+
+# Include helper script
+source $(dirname "$0")/../helper.sh
+
+FLAGS="--global"	
+DOSEOL=0
+
+UNAME='Brandon Miller'
+UEMAIL='bkmiller15@gmail.com'
+
+
+usage="
+$(basename "$0") [-h -l -d] [-u username] [-e email] --Setup GIT Preferences 
+
+where:
+    -h  Show this help text
+    -l  Makes changes local instead of global (default)
+    -d  Adds support for DOS EOL
+    -u  Change default username to name specified after flag
+    -e  Change default email to email specified after flag
+"
+
+
+
+function myaliases
+{
+	# Clear all aliases first
+	git config $FLAGS --remove-section alias
+
+	git config $FLAGS alias.co checkout
+	git config $FLAGS alias.br branch
+	git config $FLAGS alias.ci commit
+	git config $FLAGS alias.st status
+	git config $FLAGS alias.rb rebase
+
+ 	git config $FLAGS alias.unstage 'reset HEAD --'
+ 	git config $FLAGS alias.hreset 'reset --hard'
+ 	git config $FLAGS alias.cob 'checkout -b'
+ 	git config $FLAGS alias.log 'log --decorate  --graph --cumulative'
+ 	git config $FLAGS alias.flog 'log --decorate  --graph --cumulative --all'
+
+}
+
+function myidentity
+{
+	# Clear user name and email first
+	git config $FLAGS --remove-section user 
+
+	git config $FLAGS user.name "$UNAME"
+	git config $FLAGS user.email $UEMAIL
+}
+
+function mycoreconfig
+{
+	git config $FLAGS core.editor vi
+}
+
+function configforwindowseol
+{
+	git config $FLAGS core.autocrlf true
+}
+
+function helpinfo
+{
+	echo 
+}
+
+while getopts ":dhlu:e:" opt; do
+  case $opt in
+    d)
+	DOSEOL=1
+      ;;
+    l) # Clears global flag (local)
+	FLAGS=""
+      ;;
+    u)
+	UNAME=$OPTARG
+      ;;
+    e)
+	UEMAIL=$OPTARG
+      ;;
+    h)
+	echo "$usage"
+      	exit 0
+      ;;
+    :)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+	  echo "$usage"
+      exit 1
+      ;;
+  esac
+done
+
+
+# Install git
+helper_install_app git
+
+
+echo "Username will be: $UNAME" 
+echo "Email will be: $UEMAIL" 
+myidentity
+
+if [ "$DOSEOL" -eq "1" ]; then
+	configforwindowseol
+fi
+
+myaliases
+
+mycoreconfig
+

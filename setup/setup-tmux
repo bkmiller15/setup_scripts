@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# This script sets up my tmux enviorment
+#
+
+# Include helper script
+source $(dirname "$0")/../helper.sh
+
+# Install tmux
+helper_install_app tmux
+
+# Copy over tmux config
+cp /home/thekeymaker/Ark/Personal/Computer/Setup/tmux/tmux.conf ~/.tmux.conf
+
+# Instructions
+echo "TMUX Setup Complete!"

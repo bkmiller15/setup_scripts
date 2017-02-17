@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# Setup my work enviorment
+#
+
+./setup-zsh
+
+./setup-tmux
+
+./setup-vim
+
+
+# Instructions
+echo "Setup Enviorment Complete!"
+echo "Please log out for changes to take effect."

@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# This script sets up my zsh enviorment
+#
+
+# Include helper script
+source $(dirname "$0")/../helper.sh
+
+# Install zsh
+helper_install_app zsh
+
+# Copy over zsh config
+cp /home/thekeymaker/Ark/Personal/Computer/Setup/zsh/zshrc ~/.zshrc
+
+# Copy over zsh profile and copy to profile.  
+# !This is important as it alows tmux to load env variables correctly!
+cp /home/thekeymaker/Ark/Personal/Computer/Setup/zsh/zprofile ~/.zprofile
+cp ~/.zprofile ~/.profile #!!
+
+# Instructions
+echo "ZSH Setup Complete!"
